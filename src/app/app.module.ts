@@ -1,13 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { IntroComponent } from './pages/intro/intro.component';
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { ResultComponent } from './pages/result/result.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,14 @@ import { ResultComponent } from './pages/result/result.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

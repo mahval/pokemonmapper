@@ -4,6 +4,12 @@
     max-width: 85vw;
     margin: 30px auto;
 }
+
+.centered {
+    text-align: center;
+    padding: 20px 0;
+}
+
 .infocontainer { // For notmal paragraphs
     padding: 0 20px;
     text-align: center;
@@ -36,4 +42,10 @@
     from { transform: translate(0,  0px); }
     50%  { transform: translate(0, 15px); }
     to   { transform: translate(0, -0px); }    
+}
+
+.backbutton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
 }

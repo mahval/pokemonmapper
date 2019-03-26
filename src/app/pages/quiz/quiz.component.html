@@ -1,3 +1,24 @@
-<p>
-  quiz works!
-</p>
+<button mat-icon-button class="backbutton" (click)="goHome()">
+  <mat-icon>home</mat-icon>
+</button>
+<div class="contentcontainer centered">
+  <form [formGroup]="quizFormGroup">
+    <mat-form-field>
+      <input matInput formControlName="pokemon" placeholder="Give pokemon" autocomplete="off">
+    </mat-form-field>
+    <br>
+    <button mat-button (click)="getPokemon(quizFormGroup.get('pokemon').value)">Submit</button>
+  </form>
+</div>
+<div class="contentcontainer" *ngIf="currentPokemon centered">
+  <div class="centeredanimated">
+    <img [src]="currentPokemon.sprites.front_default">
+  </div>
+  <div class="pokemoninfo">
+    <ul>
+      <li>
+        <p class="mat-body">#{{ currentPokemon.id }}</p>
+      </li>
+    </ul>
+  </div>
+</div>
