@@ -3,22 +3,40 @@
 </button>
 <div class="contentcontainer centered">
   <form [formGroup]="quizFormGroup">
-    <mat-form-field>
+    <!-- <mat-form-field>
       <input matInput formControlName="pokemon" placeholder="Give pokemon" autocomplete="off">
     </mat-form-field>
+    <br> -->
+    <mat-form-field>
+      <input matInput formControlName="wantedType" placeholder="Give pokemon" autocomplete="off">
+    </mat-form-field>
     <br>
-    <button mat-button (click)="getPokemon(quizFormGroup.get('pokemon').value)">Submit</button>
+    <button mat-button (click)="updateResult()">Submit</button>
   </form>
 </div>
-<div class="contentcontainer" *ngIf="currentPokemon centered">
-  <div class="centeredanimated">
-    <img [src]="currentPokemon.sprites.front_default">
+<!-- <div class="contentcontainer" *ngIf="currentPokemon">
+  <div class="pokemonbox">
+    <div class="centered">
+      <img class="pokemonimage" [src]="currentPokemon.sprites.front_default">
+    </div>
+    <div class="pokemoninfo">
+      <ul>
+        <li>
+          <p class="mat-body">#{{ currentPokemon.id }}</p>
+        </li>
+      </ul>
+    </div>
   </div>
-  <div class="pokemoninfo">
-    <ul>
-      <li>
-        <p class="mat-body">#{{ currentPokemon.id }}</p>
-      </li>
-    </ul>
+</div> -->
+<div class="contentcontainer centered" *ngIf="pokemonOfWantedType">
+  <div class="pokemonbox" *ngFor="let pokemon of pokemonOfWantedType">
+    <img class="pokemonimage" [src]="pokemon.sprites.front_default">
+    <div class="pokemoninfo">
+      <ul>
+        <li>
+          <p class="mat-body">#{{ pokemon?.id }}</p>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

@@ -11,6 +11,14 @@ export class PokemonfetcherService {
   ) { }
 
   getPokemon(pokemonname: string) {
-    return this.http.get<any>('https://pokeapi.co/api/v2/pokemon/' + pokemonname);
+    return this.http.get<any>('https://pokeapi.co/api/v2/pokemon/' + pokemonname + '/');
+  }
+
+  getPokemonFromURL(url: string) {
+    return this.http.get<any>(url);
+  }
+
+  getPokemonListBasedOnType(type: string) {
+    return this.http.get<any>('https://pokeapi.co/api/v2/type/' + type + '/');
   }
 }
