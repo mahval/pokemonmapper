@@ -12,4 +12,8 @@ export class IntroComponent implements OnInit {
   ngOnInit() {
   }
 
+  start() {
+    console.log('Starting');
+  }
+
 }
