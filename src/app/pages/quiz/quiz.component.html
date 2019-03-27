@@ -1,42 +1,51 @@
 <button mat-icon-button class="backbutton" (click)="goHome()">
   <mat-icon>home</mat-icon>
 </button>
+
 <div class="contentcontainer centered">
   <form [formGroup]="quizFormGroup">
-    <!-- <mat-form-field>
-      <input matInput formControlName="pokemon" placeholder="Give pokemon" autocomplete="off">
-    </mat-form-field>
-    <br> -->
     <mat-form-field>
-      <input matInput formControlName="wantedType" placeholder="Give pokemon" autocomplete="off">
+      <mat-select formControlName="wantedType" placeholder="Select type">
+        <mat-option *ngFor="let type of allPokemonTypes" [value]="type.name">
+          {{ type.name | titlecase }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-    <br>
-    <button mat-button (click)="updateResult()">Submit</button>
   </form>
 </div>
-<!-- <div class="contentcontainer" *ngIf="currentPokemon">
-  <div class="pokemonbox">
-    <div class="centered">
-      <img class="pokemonimage" [src]="currentPokemon.sprites.front_default">
+<div class="contentcontainer centered pokemonlistcontainer" *ngIf="pokemonOfWantedType">
+  <div class="generationbox" *ngFor="let gen of generations">
+    <button mat-button (click)="toggleGeneration(gen.number)">
+      <p class="mat-h3">Generation {{ gen.number }}
+        <mat-icon *ngIf="!showGeneration(gen.number)">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="showGeneration(gen.number)">keyboard_arrow_up</mat-icon>
+      </p>
+    </button>
+    <div *ngIf="showGeneration(gen.number)">
+      <ng-container *ngFor="let pokemon of pokemonOfWantedType">
+        <div class="pokemonbox" *ngIf="getGenByPokemonID(pokemon.id) === gen.number">
+          <div class="pokemonimage" (click)="selectPokemon(pokemon)">
+            <span class="helper"></span>
+            <img *ngIf="pokemon.sprites.front_default" [src]="pokemon.sprites.front_default">
+            <img *ngIf="!pokemon.sprites.front_default" src="assets/sprites/ghost.png">
+          </div>
+          <div class="pokemoninfo clickable" (click)="selectPokemon(pokemon)">
+
+            <!-- <p class="mat-small">#{{ pokemon?.id }} {{ pokemon?.name | titlecase }}</p> -->
+            <!-- <button class="small-button" mat-raised-button color="accent" (click)="selectPokemon(pokemon)"> -->
+            <p class="mat-body pokemonid">#{{ pokemon?.id }}</p>
+            <p class="mat-body"> {{ pokemon?.name | titlecase }}</p>
+            <p class="mat-body pokemonid">
+              <ng-container *ngFor="let type of pokemon.types; let ndx = index">
+                <span *ngIf="ndx > 0"> / </span>
+                {{ type.type.name | titlecase }}
+              </ng-container>
+            </p>
+          </div>
+        </div>
+      </ng-container>
     </div>
-    <div class="pokemoninfo">
-      <ul>
-        <li>
-          <p class="mat-body">#{{ currentPokemon.id }}</p>
-        </li>
-      </ul>
-    </div>
+    <mat-divider [inset]="true"></mat-divider>
   </div>
-</div> -->
-<div class="contentcontainer centered" *ngIf="pokemonOfWantedType">
-  <div class="pokemonbox" *ngFor="let pokemon of pokemonOfWantedType">
-    <img class="pokemonimage" [src]="pokemon.sprites.front_default">
-    <div class="pokemoninfo">
-      <ul>
-        <li>
-          <p class="mat-body">#{{ pokemon?.id }}</p>
-        </li>
-      </ul>
-    </div>
-  </div>
+
 </div>

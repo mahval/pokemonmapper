@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { PokemonfetcherService } from 'src/app/pokemonfetcher.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,6 +14,17 @@ export class QuizComponent implements OnInit {
   wantedType;
   pokemonURLsOfWantedType;
   pokemonOfWantedType = [];
+  allPokemonTypes = [];
+
+  generations = [
+    { number: 1, show: true },
+    { number: 2, show: true },
+    { number: 3, show: true },
+    { number: 4, show: true },
+    { number: 5, show: true },
+    { number: 6, show: true },
+    { number: 7, show: true },
+  ];
 
   constructor(
     private pfs: PokemonfetcherService,
@@ -25,25 +36,22 @@ export class QuizComponent implements OnInit {
       wantedType: 'normal'
     });
     this.getPokemon('Pikachu');
-    this.getPokemonListBasedOnType('normal');
-  }
+    this.getPokemonListBasedOnType('Normal');
 
-  ngOnInit() {
-  }
-
-  getPokemon(pokemonname: string) {
-    console.log("hi", pokemonname)
-    this.pfs.getPokemon(pokemonname.toLowerCase()).subscribe(result => {
-      this.currentPokemon = result;
-      console.log('Name: ', result.name)
-      console.log('REsult: ', result)
-      return result;
+    this.quizFormGroup.get('wantedType').valueChanges.subscribe(type => {
+      this.getPokemonListBasedOnType(type);
+      this.resetGenerationToggles();
     });
   }
 
-  getPokemonFromURL(url: string) {
-    this.pfs.getPokemonFromURL(url).subscribe(result => {
-      this.pokemonOfWantedType.push(result);
+  ngOnInit() {
+    this.setAllPokemonTypes();
+  }
+
+  getPokemon(pokemonname: string) {
+    this.pfs.getPokemon(pokemonname.toLowerCase()).subscribe(result => {
+      this.currentPokemon = result;
+      return result;
     });
   }
 
@@ -51,29 +59,81 @@ export class QuizComponent implements OnInit {
     this.pokemonOfWantedType = [];
     this.pfs.getPokemonListBasedOnType(type.toLowerCase()).subscribe(result => {
       this.wantedType = type;
-      console.log('result: ', result.pokemon);
-      // this.pfs.getPokemonFromURL(result)
       this.pokemonURLsOfWantedType = result.pokemon;
-      console.log("translatePokemonFromUrl: ", this.pokemonURLsOfWantedType)
-      this.translatePokemonFromUrl(this.pokemonURLsOfWantedType);
+      console.log('translatePokemonFromUrl: ', this.pokemonURLsOfWantedType)
+      this.pokemonURLsOfWantedType.forEach(pkmn => {
+        this.setPokemonFromURL(pkmn.pokemon.url);
+      });
     });
-
   }
 
-  translatePokemonFromUrl(list) {
-    console.log("List. ", list)
-    list.forEach(pkmn => {
-      console.log("pokemon name: ", pkmn.pokemon.name)
-      console.log("pokemon url: ", pkmn.pokemon.url)
-
-      this.getPokemonFromURL(pkmn.pokemon.url);
+  sortPokemonByID(list) {
+    list.sort(function (a, b) {
+      return a.id - b.id;
     });
-    console.log("pokemonOfWantedType: ", this.pokemonOfWantedType)
+  }
+
+  setAllPokemonTypes() {
+    this.pfs.getAllPokemonGenerations().subscribe(res => {
+      res.forEach(gen => {
+        gen.types.forEach(type => {
+          if (type.name !== 'shadow' && type.name !== 'unknown') {
+            this.allPokemonTypes.push(type);
+          }
+        });
+      });
+    });
+  }
+
+  setPokemonFromURL(url: string) {
+    this.pfs.getPokemonFromURL(url).subscribe(result => {
+      this.pokemonOfWantedType.push(result);
+      this.sortPokemonByID(this.pokemonOfWantedType);
+    });
   }
 
   updateResult() {
     this.getPokemon(this.quizFormGroup.get('pokemon').value);
     this.getPokemonListBasedOnType(this.quizFormGroup.get('wantedType').value);
+  }
+
+  getGenByPokemonID(pokemonid: number): number {
+    if (0 < pokemonid && pokemonid <= 151) {
+      return 1;
+    } else if (151 < pokemonid && pokemonid <= 251) {
+      return 2;
+    } else if (251 < pokemonid && pokemonid <= 386) {
+      return 3;
+    } else if (386 < pokemonid && pokemonid <= 493) {
+      return 4;
+    } else if (493 < pokemonid && pokemonid <= 649) {
+      return 5;
+    } else if (649 < pokemonid && pokemonid <= 721) {
+      return 6;
+    } else if (721 < pokemonid && pokemonid <= 809) {
+      return 7;
+    } else {
+      return 8;
+    }
+  }
+
+  showGeneration(n: number) {
+    return this.generations.find(e => e.number === n).show;
+  }
+
+  toggleGeneration(n: number) {
+    this.generations.find(e => e.number === n).show = !this.generations.find(e => e.number === n).show;
+  }
+
+  resetGenerationToggles() {
+    this.generations = this.generations.map(function (x) {
+      x.show = true;
+      return x;
+    });
+  }
+
+  selectPokemon(pokemon) {
+    console.log('You have chosen ', pokemon)
   }
 
   goHome() {
