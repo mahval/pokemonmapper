@@ -9,12 +9,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit {
+  dataReady = false;
+
   quizFormGroup: FormGroup;
-  currentPokemon;
-  wantedType;
-  pokemonURLsOfWantedType;
-  pokemonOfWantedType = [];
   allPokemonTypes = [];
+
+  chosenGeneration = 1;
+  chosenType = 'Normal';
+
+  listOfAllPokemon = [
+    { generationId: 1, pokemonList: [] },
+    { generationId: 2, pokemonList: [] },
+    { generationId: 3, pokemonList: [] },
+    { generationId: 4, pokemonList: [] },
+    { generationId: 5, pokemonList: [] },
+    { generationId: 6, pokemonList: [] },
+    { generationId: 7, pokemonList: [] }
+  ];
 
   generations = [
     { number: 1, show: true },
@@ -32,38 +43,41 @@ export class QuizComponent implements OnInit {
     private router: Router
   ) {
     this.quizFormGroup = this.fb.group({
-      pokemon: 'Pikachu',
-      wantedType: 'normal'
+      chosenType: 'normal',
+      chosenGeneration: 1
     });
-    this.getPokemon('Pikachu');
-    this.getPokemonListBasedOnType('Normal');
 
-    this.quizFormGroup.get('wantedType').valueChanges.subscribe(type => {
-      this.getPokemonListBasedOnType(type);
+    this.quizFormGroup.valueChanges.subscribe(() => {
+      this.updateFormGroupValues();
       this.resetGenerationToggles();
     });
   }
 
   ngOnInit() {
     this.setAllPokemonTypes();
+    this.setAllPokemon();
   }
 
-  getPokemon(pokemonname: string) {
-    this.pfs.getPokemon(pokemonname.toLowerCase()).subscribe(result => {
-      this.currentPokemon = result;
-      return result;
-    });
-  }
-
-  getPokemonListBasedOnType(type: string) {
-    this.pokemonOfWantedType = [];
-    this.pfs.getPokemonListBasedOnType(type.toLowerCase()).subscribe(result => {
-      this.wantedType = type;
-      this.pokemonURLsOfWantedType = result.pokemon;
-      console.log('translatePokemonFromUrl: ', this.pokemonURLsOfWantedType)
-      this.pokemonURLsOfWantedType.forEach(pkmn => {
-        this.setPokemonFromURL(pkmn.pokemon.url);
+  setAllPokemon() {
+    this.pfs.getAllPokemonGenerations().subscribe(res => {
+      res.forEach(gen => {
+        gen.types.forEach(type => {
+          if (type.name !== 'shadow' && type.name !== 'unknown') {
+            this.pfs.getPokemonListBasedOnType(type.name).subscribe(list => {
+              list.pokemon.forEach(pokemon => {
+                this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
+                  const found = this.listOfAllPokemon.find(e => e.generationId === this.getGenByPokemonID(pkmn.id));
+                  if (found && !found.pokemonList.find(e => e.id === pkmn.id)) {
+                    found.pokemonList.push(pkmn);
+                    this.sortPokemonByID(found.pokemonList);
+                  }
+                });
+              });
+            });
+          }
+        });
       });
+      this.dataReady = true;
     });
   }
 
@@ -85,20 +99,17 @@ export class QuizComponent implements OnInit {
     });
   }
 
-  setPokemonFromURL(url: string) {
-    this.pfs.getPokemonFromURL(url).subscribe(result => {
-      this.pokemonOfWantedType.push(result);
-      this.sortPokemonByID(this.pokemonOfWantedType);
-    });
+  updateFormGroupValues() {
+    this.chosenGeneration = this.quizFormGroup.get('chosenGeneration').value;
+    this.chosenType = this.quizFormGroup.get('chosenType').value;
   }
 
-  updateResult() {
-    this.getPokemon(this.quizFormGroup.get('pokemon').value);
-    this.getPokemonListBasedOnType(this.quizFormGroup.get('wantedType').value);
+  updateChosenType(type: string) {
+    this.chosenType = type;
   }
 
   getGenByPokemonID(pokemonid: number): number {
-    if (0 < pokemonid && pokemonid <= 151) {
+    if (pokemonid <= 151) {
       return 1;
     } else if (151 < pokemonid && pokemonid <= 251) {
       return 2;
@@ -115,6 +126,10 @@ export class QuizComponent implements OnInit {
     } else {
       return 8;
     }
+  }
+
+  isPokemonCorrectType(pokemon) {
+    return (pokemon.types.find(t => t.type.name.toLowerCase() === this.chosenType.toLowerCase()));
   }
 
   showGeneration(n: number) {
