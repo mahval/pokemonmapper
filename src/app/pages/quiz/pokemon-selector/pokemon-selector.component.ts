@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class PokemonSelectorComponent implements OnInit {
   dataReady = false;
 
+  selectedBox = null; // What box user wants to fill
+
   quizFormGroup: FormGroup;
   allPokemonTypes = [];
 
@@ -154,8 +156,13 @@ export class PokemonSelectorComponent implements OnInit {
     });
   }
 
-  selectPokemon(pokemon) {
-    console.log('You have chosen ', pokemon)
+  selectTableBox(generation: number, type: string) {
+    if (generation === 0) {
+      // This is all gens
+    }
+    console.log('selected generation ', generation, ' and type ', type);
+    this.chosenGeneration = generation;
+    this.chosenType = type;
   }
 
   goHome() {

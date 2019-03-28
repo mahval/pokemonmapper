@@ -1,0 +1,19 @@
+<div class="contentcontainer centered tablecontainer">
+  <table>
+    <tr>
+      <th></th>
+      <th *ngFor="let type of allPokemonTypes">
+        {{ type.name }}
+      </th>
+    </tr>
+    <tr *ngFor="let generation of generations">
+      <!-- <td></td> -->
+      <td>Gen {{ generation.number }}</td>
+      <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(generation.number, type.name)"></td>
+    </tr>
+    <tr>
+      <td>Favorite</td>
+      <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(0, type.name)"></td>
+    </tr>
+  </table>
+</div>

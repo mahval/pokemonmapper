@@ -15,6 +15,7 @@ import { QuizComponent } from './pages/quiz/quiz.component';
 import { ResultComponent } from './pages/result/result.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PokemonSelectorComponent } from './pages/quiz/pokemon-selector/pokemon-selector.component';
+import { PokemonTableComponent } from './pages/quiz/pokemon-table/pokemon-table.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PokemonSelectorComponent } from './pages/quiz/pokemon-selector/pokemon-
     IntroComponent,
     QuizComponent,
     ResultComponent,
-    PokemonSelectorComponent
+    PokemonSelectorComponent,
+    PokemonTableComponent
   ],
   imports: [
     BrowserModule,

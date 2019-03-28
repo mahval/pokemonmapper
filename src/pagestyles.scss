@@ -85,6 +85,13 @@
     }
 }
 
+.tablecontainer {
+    // margin: 40px;
+    table {
+        margin: 20px auto;
+    }
+}
+
 // ------------------ IMAGES/ICONS ------------------ //
 
 .centeredanimated {
@@ -125,3 +132,21 @@ mat-icon {
 .small-button {
     padding: 7px 5px;   
 }
+
+// ------------------ TABLE ------------------ //
+table {
+    border-collapse: collapse;
+  }
+  
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  th, td {
+      padding: 10px;
+  }
+
+  td.selectable:hover {
+    cursor: pointer;
+    background-color: gray;
+  }
