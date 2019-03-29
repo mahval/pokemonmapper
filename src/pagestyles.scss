@@ -142,11 +142,32 @@ table {
     border: 1px solid black;
   }
 
-  th, td {
-      padding: 10px;
-  }
-
   td.selectable:hover {
     cursor: pointer;
     background-color: gray;
+  }
+
+  .tablecontainer {
+      overflow: auto;
+
+    td.generation-td, th.type-td {
+        background-color: palevioletred;
+    }
+    td.selected-td {
+        background-color: rgba(255, 255, 255, 0.5);
+        -webkit-animation-name: fadingWhiteBackground; /* Safari 4.0 - 8.0 */
+        -webkit-animation-duration: 0.5s; /* Safari 4.0 - 8.0 */
+        animation-name: fadingWhiteBackground;
+        animation-duration: 0.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }
+    th.nothing-td {
+        border: none;
+    }
+    @keyframes fadingWhiteBackground {
+        from { background-color: rgba(255, 255, 255, 0) }
+        50%  { background-color: rgba(255, 255, 255, 1) }
+        to { background-color: rgba(255, 255, 255, 0) }
+      }
   }
