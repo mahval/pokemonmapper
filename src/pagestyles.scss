@@ -153,6 +153,10 @@ table {
     td.generation-td, th.type-td {
         background-color: palevioletred;
     }
+    td.favorite-td {
+        min-width: 150px;
+        min-height: 150px;
+    }
     td.selected-td {
         background-color: rgba(255, 255, 255, 0.5);
         -webkit-animation-name: fadingWhiteBackground; /* Safari 4.0 - 8.0 */

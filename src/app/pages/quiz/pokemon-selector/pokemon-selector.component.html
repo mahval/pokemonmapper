@@ -24,7 +24,6 @@
             class="selectable favorite-td"
             [ngClass]="{ 'selected-td': isTableBoxSelected(generation.number, type.name) }">
             <!-- {{ savedFavorites.}} -->
-            {{ isTableBoxSelected(generation.number, type.name) | json }}
             <ng-container *ngIf="getFavoriteForCategoryAndType(generation.number, type.name)">
               <!-- {{ getFavoriteForCategoryAndType(generation.number, type.name)?.pokemonName }} -->
               <img [src]="getFavoriteForCategoryAndType(generation.number, type.name)?.pokemonSprite">
