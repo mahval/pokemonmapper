@@ -3,6 +3,8 @@ import { PokemonfetcherService } from 'src/app/pokemonfetcher.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
+import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-pokemon-selector',
@@ -46,7 +48,8 @@ export class PokemonSelectorComponent implements OnInit {
     private pfs: PokemonfetcherService,
     private fb: FormBuilder,
     private router: Router,
-    private pss: PokemonstorageService
+    private pss: PokemonstorageService,
+    public dialog: MatDialog
   ) {
     this.quizFormGroup = this.fb.group({
       chosenType: 'normal',
@@ -201,6 +204,29 @@ export class PokemonSelectorComponent implements OnInit {
       }
     }
     return null;
+  }
+
+  clearTable() {
+    this.pss.deleteLocalStorage();
+    this.updateFavoritesInTable();
+  }
+
+  openResetDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+      width: '250px',
+      data: {
+        title: 'Reset table',
+        question: 'Do you want to delete all content in your table?',
+        yesOptionTitle: 'Yes',
+        noOptionTitle: 'No'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.clearTable();
+      }
+    });
   }
 
 

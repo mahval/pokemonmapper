@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <p class="mat-body">{{ question }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>{{ noOptionTitle }}</button>
+  <button mat-button (click)="reset()">{{ yesOptionTitle }}</button>
+</div>

@@ -4,7 +4,9 @@
 </div>
 
 <ng-container *ngIf="dataReady">
-
+  <mat-toolbar color="primary">
+    <button mat-button (click)="openResetDialog()">Clear table</button>
+  </mat-toolbar>
   <!-- <app-pokemon-table></app-pokemon-table> -->
 
   <div class="contentcontainer centered">
@@ -18,9 +20,7 @@
         </tr>
         <tr *ngFor="let generation of generations">
           <td class="generation-td">Gen {{ generation.number }}</td>
-          <td
-            *ngFor="let type of allPokemonTypes"
-            (click)="selectTableBox(generation.number, type.name)"
+          <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(generation.number, type.name)"
             class="selectable favorite-td"
             [ngClass]="{ 'selected-td': isTableBoxSelected(generation.number, type.name) }">
             <!-- {{ savedFavorites.}} -->
@@ -32,10 +32,7 @@
         </tr>
         <tr>
           <td>Favorite</td>
-          <td
-            *ngFor="let type of allPokemonTypes"
-            (click)="selectTableBox(0, type.name)"
-            class="selectable favorite-td"
+          <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(0, type.name)" class="selectable favorite-td"
             [ngClass]="{ 'selected-td': isTableBoxSelected(0, type.name) }"></td>
         </tr>
       </table>
@@ -65,9 +62,14 @@
         <ng-container *ngIf="generation.generationId === chosenGeneration">
           <div class="generationbox">
             <button mat-button (click)="toggleGeneration(generation.generationId)">
-              <p class="mat-h3">Generation {{ generation.generationId }}
-                <mat-icon *ngIf="!showGeneration(generation.generationId)">keyboard_arrow_down</mat-icon>
-                <mat-icon *ngIf="showGeneration(generation.generationId)">keyboard_arrow_up</mat-icon>
+              <p class="mat-h3">
+                <span>
+                  Generation {{ generation.generationId }}
+                  <mat-icon *ngIf="!showGeneration(generation.generationId)">keyboard_arrow_down</mat-icon>
+                  <mat-icon *ngIf="showGeneration(generation.generationId)">keyboard_arrow_up</mat-icon>
+                </span>
+                <br>
+                <span>Favorite {{ chosenType }} type</span>
               </p>
             </button>
             <div *ngIf="showGeneration(generation.generationId)">

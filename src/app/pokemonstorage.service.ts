@@ -51,6 +51,10 @@ export class PokemonstorageService {
     }
     return null;
   }
+
+  deleteLocalStorage() {
+    localStorage.removeItem('pokemonMapperFavorites');
+  }
 }
 
 export class FavoriteCategory {
