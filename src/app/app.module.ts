@@ -6,7 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule,
-  MatSelectModule, MatDividerModule, MatProgressSpinnerModule
+  MatSelectModule, MatDividerModule, MatProgressSpinnerModule, MatToolbarModule,
+  MatDialogModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { ResultComponent } from './pages/result/result.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PokemonSelectorComponent } from './pages/quiz/pokemon-selector/pokemon-selector.component';
 import { PokemonTableComponent } from './pages/quiz/pokemon-table/pokemon-table.component';
+import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { PokemonTableComponent } from './pages/quiz/pokemon-table/pokemon-table.
     QuizComponent,
     ResultComponent,
     PokemonSelectorComponent,
-    PokemonTableComponent
+    PokemonTableComponent,
+    ConfirmdialogComponent
   ],
   imports: [
     BrowserModule,
@@ -39,9 +42,12 @@ import { PokemonTableComponent } from './pages/quiz/pokemon-table/pokemon-table.
     MatIconModule,
     MatSelectModule,
     MatDividerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatToolbarModule,
+    MatDialogModule,
   ],
-  providers: [],
+  providers: [ConfirmdialogComponent],
+  entryComponents: [ConfirmdialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

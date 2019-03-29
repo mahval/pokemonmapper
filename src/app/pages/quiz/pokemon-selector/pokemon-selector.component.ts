@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonfetcherService } from 'src/app/pokemonfetcher.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PokemonstorageService } from 'src/app/pokemonstorage.service';
+import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-pokemon-selector',
@@ -20,6 +23,8 @@ export class PokemonSelectorComponent implements OnInit {
   chosenType;
 
   selectedPokemon;
+
+  savedFavorites;
 
   listOfAllPokemon = [
     { generationId: 1, pokemonList: [] },
@@ -44,7 +49,9 @@ export class PokemonSelectorComponent implements OnInit {
   constructor(
     private pfs: PokemonfetcherService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private pss: PokemonstorageService,
+    public dialog: MatDialog
   ) {
     // this.quizFormGroup = this.fb.group({
     //   chosenType: 'normal',
@@ -60,6 +67,7 @@ export class PokemonSelectorComponent implements OnInit {
   ngOnInit() {
     this.setAllPokemonTypes();
     this.setAllPokemon();
+    this.updateFavoritesInTable();
   }
 
   setAllPokemon() {
@@ -74,7 +82,6 @@ export class PokemonSelectorComponent implements OnInit {
                   if (found && !found.pokemonList.find(e => e.id === pkmn.id)) {
                     found.pokemonList.push(pkmn);
                     this.sortPokemonByID(found.pokemonList);
-                    // this.dataReady = true;
                   }
                 },
                   error => {
@@ -173,10 +180,68 @@ export class PokemonSelectorComponent implements OnInit {
     if (generation === 0) {
       // This is all gens
     }
-    console.log('selected generation ', generation, ' and type ', type);
+    console.log('selected generation ', generation, ' and type ', type, ' with pokemon ');
     this.chosenGeneration = generation;
     this.chosenType = type;
+    // TO GET POKEMON:
+    // getFavoriteForCategoryAndType(generation.number, type.name)
   }
+
+  isTableBoxSelected(generation: number, type: string) {
+    return (this.chosenGeneration === generation && this.chosenType === type);
+  }
+
+  savePokemonAsFavorite(generation: number, type: string, pokemon) {
+    if (generation === 0) {
+      // This is all gens
+    }
+    this.pss.savePokemon(generation, type, pokemon);
+    console.log('selected generation ', generation, ' and type ', type, ' with pokemon ', pokemon);
+
+    this.updateFavoritesInTable();
+  }
+
+  updateFavoritesInTable() {
+    this.savedFavorites = this.pss.getSavedFavoritesFromLocalStorage();
+  }
+
+  getFavoriteForCategoryAndType(category: number, type: string) {
+    let favorite;
+    if (this.savedFavorites) {
+      const foundCat = this.savedFavorites.find(c => c.id === category);
+      if (foundCat && foundCat.favoriteTypes) {
+        favorite = foundCat.favoriteTypes.find(t => t.type === type);
+      }
+      if (favorite) {
+        return favorite;
+      }
+    }
+    return null;
+  }
+
+  clearTable() {
+    this.pss.deleteLocalStorage();
+    this.updateFavoritesInTable();
+  }
+
+  openResetDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+      width: '250px',
+      data: {
+        title: 'Reset table',
+        question: 'Do you want to delete all content in your table?',
+        yesOptionTitle: 'Yes',
+        noOptionTitle: 'No'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.clearTable();
+      }
+    });
+  }
+
 
   goHome() {
     this.router.navigate(['']);
