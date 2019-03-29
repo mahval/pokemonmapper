@@ -19,7 +19,8 @@
         <tr *ngFor="let generation of generations">
           <!-- <td></td> -->
           <td>Gen {{ generation.number }}</td>
-          <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(generation.number, type.name)" class="selectable"></td>
+          <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(generation.number, type.name)"
+            class="selectable"></td>
         </tr>
         <tr>
           <td>Favorite</td>
@@ -28,7 +29,7 @@
       </table>
     </div>
 
-    <div *ngIf="selectedBox">
+    <!-- <div *ngIf="selectedBox">
       <form [formGroup]="quizFormGroup">
         <mat-form-field>
           <mat-select formControlName="chosenGeneration" placeholder="Select generation">
@@ -45,9 +46,9 @@
           </mat-select>
         </mat-form-field>
       </form>
-    </div>
+    </div> -->
 
-    <div class="pokemonlistcontainer">
+    <div class="pokemonlistcontainer" *ngIf="(chosenGeneration || chosenType)">
       <ng-container *ngFor="let generation of listOfAllPokemon">
         <ng-container *ngIf="generation.generationId === chosenGeneration">
           <div class="generationbox">
@@ -60,12 +61,18 @@
             <div *ngIf="showGeneration(generation.generationId)">
               <ng-container *ngFor="let pokemon of generation.pokemonList">
                 <div class="pokemonbox" *ngIf="isPokemonCorrectType(pokemon)">
-                  <div class="pokemonimage" (click)="selectPokemon(pokemon)">
+                  <div class="pokemonimage" (click)="selectPokemon(pokemon)"
+                    [ngClass]="{'jumping': isSelected(pokemon)}">
                     <span class="helper"></span>
                     <img *ngIf="pokemon.sprites.front_default" [src]="pokemon.sprites.front_default">
                     <img *ngIf="!pokemon.sprites.front_default" src="assets/sprites/ghost.png">
                   </div>
-                  <div class="pokemoninfo clickable" (click)="selectPokemon(pokemon)">
+                  <div class="pokemoninfo" *ngIf="isSelected(pokemon)">
+                    <button mat-raised-button color="primary">
+                      Choose {{ pokemon?.name | titlecase }}
+                    </button>
+                  </div>
+                  <div class="pokemoninfo clickable" (click)="selectPokemon(pokemon)" *ngIf="!isSelected(pokemon)">
 
                     <!-- <p class="mat-small">#{{ pokemon?.id }} {{ pokemon?.name | titlecase }}</p> -->
                     <!-- <button class="small-button" mat-raised-button color="accent" (click)="selectPokemon(pokemon)"> -->

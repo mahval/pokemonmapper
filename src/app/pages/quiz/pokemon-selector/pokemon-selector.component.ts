@@ -16,8 +16,10 @@ export class PokemonSelectorComponent implements OnInit {
   quizFormGroup: FormGroup;
   allPokemonTypes = [];
 
-  chosenGeneration = 1;
-  chosenType = 'Normal';
+  chosenGeneration;
+  chosenType;
+
+  selectedPokemon;
 
   listOfAllPokemon = [
     { generationId: 1, pokemonList: [] },
@@ -44,15 +46,15 @@ export class PokemonSelectorComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router
   ) {
-    this.quizFormGroup = this.fb.group({
-      chosenType: 'normal',
-      chosenGeneration: 2
-    });
+    // this.quizFormGroup = this.fb.group({
+    //   chosenType: 'normal',
+    //   chosenGeneration: 2
+    // });
 
-    this.quizFormGroup.valueChanges.subscribe(() => {
-      this.updateFormGroupValues();
-      this.resetGenerationToggles();
-    });
+    // this.quizFormGroup.valueChanges.subscribe(() => {
+    //   this.updateFormGroupValues();
+    //   this.resetGenerationToggles();
+    // });
   }
 
   ngOnInit() {
@@ -75,13 +77,13 @@ export class PokemonSelectorComponent implements OnInit {
                     // this.dataReady = true;
                   }
                 },
-                error => {
-                  // On error
-                },
-                () => {
-                  this.updateFormGroupValues();
-                  this.dataReady = true;
-                });
+                  error => {
+                    // On error
+                  },
+                  () => {
+                    // this.updateFormGroupValues();
+                    this.dataReady = true;
+                  });
               });
             });
           }
@@ -108,10 +110,10 @@ export class PokemonSelectorComponent implements OnInit {
     });
   }
 
-  updateFormGroupValues() {
-    this.chosenGeneration = this.quizFormGroup.get('chosenGeneration').value;
-    this.chosenType = this.quizFormGroup.get('chosenType').value;
-  }
+  // updateFormGroupValues() {
+  //   this.chosenGeneration = this.quizFormGroup.get('chosenGeneration').value;
+  //   this.chosenType = this.quizFormGroup.get('chosenType').value;
+  // }
 
   updateChosenType(type: string) {
     this.chosenType = type;
@@ -154,6 +156,17 @@ export class PokemonSelectorComponent implements OnInit {
       x.show = true;
       return x;
     });
+  }
+
+  selectPokemon(pokemon) {
+    console.log(pokemon);
+    this.selectedPokemon = pokemon;
+  }
+
+  isSelected(pokemon) {
+    if (this.selectedPokemon) {
+      return (pokemon.id === this.selectedPokemon.id);
+    }
   }
 
   selectTableBox(generation: number, type: string) {

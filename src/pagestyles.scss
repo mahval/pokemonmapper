@@ -47,7 +47,7 @@
     }
 }
 
-.pokemonimage:hover {
+.pokemonimage:hover, .jumping {
     cursor: pointer;
     animation-name: floating-mini;
     animation-duration: 0.3s;
@@ -60,6 +60,7 @@
 }
 
 .pokemoninfo {
+    min-height: 45px;
     text-align: center;
     p {
         margin: 0;
