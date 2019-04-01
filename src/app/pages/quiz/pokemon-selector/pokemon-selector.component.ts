@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material';
+import { SimplePokemon } from 'src/app/classes';
 
 @Component({
   selector: 'app-pokemon-selector',
@@ -80,7 +81,7 @@ export class PokemonSelectorComponent implements OnInit {
                 this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
                   const found = this.listOfAllPokemon.find(e => e.generationId === this.getGenByPokemonID(pkmn.id));
                   if (found && !found.pokemonList.find(e => e.id === pkmn.id)) {
-                    found.pokemonList.push(pkmn);
+                    found.pokemonList.push(new SimplePokemon(pkmn));
                     this.sortPokemonByID(found.pokemonList);
                   }
                 },
@@ -221,6 +222,7 @@ export class PokemonSelectorComponent implements OnInit {
 
   clearTable() {
     this.pss.deleteLocalStorage();
+    this.savedFavorites = [];
     this.updateFavoritesInTable();
   }
 

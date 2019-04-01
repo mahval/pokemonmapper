@@ -78,8 +78,9 @@
                   <div class="pokemonimage" (click)="savePokemonAsFavorite(chosenGeneration, chosenType, pokemon)"
                   [ngClass]="{'jumping': isSelected(pokemon)}">
                     <span class="helper"></span>
-                    <img *ngIf="pokemon.sprites.front_default" [src]="pokemon.sprites.front_default">
-                    <img *ngIf="!pokemon.sprites.front_default" src="assets/sprites/ghost.png">
+                    {{ pokemon | json }}
+                    <img *ngIf="pokemon.pokemonSprite" [src]="pokemon.pokemonSprite">
+                    <img *ngIf="!pokemon.pokemonSprite" src="assets/sprites/ghost.png">
                   </div>
                   <div class="pokemoninfo" *ngIf="isSelected(pokemon)">
                     <button mat-raised-button color="primary">
