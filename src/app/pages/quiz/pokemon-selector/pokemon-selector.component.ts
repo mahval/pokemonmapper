@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material';
-import { SimplePokemon } from 'src/app/classes';
+import { SimplePokemon, getGenByPokemonID } from 'src/app/classes';
 
 @Component({
   selector: 'app-pokemon-selector',
@@ -82,7 +82,7 @@ export class PokemonSelectorComponent implements OnInit {
               list.pokemon.forEach(pokemon => {
                 if (pokemon.pokemon.url) {
                   this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
-                    const found = this.listOfAllPokemon.find(e => e.generationId === this.getGenByPokemonID(pkmn.id));
+                    const found = this.listOfAllPokemon.find(e => e.generationId === getGenByPokemonID(pkmn.id));
                     if (found && !found.pokemonList.find(e => e.pokemonId === pkmn.id)) {
                       found.pokemonList.push(new SimplePokemon(pkmn));
                       this.sortPokemonByID(found.pokemonList);
@@ -92,7 +92,9 @@ export class PokemonSelectorComponent implements OnInit {
                     },
                     () => {
                       this.listURLsReady = true;
-                      if (this.listDataReady) this.dataReady = true;
+                      if (this.listDataReady) {
+                        this.dataReady = true;
+                      }
                     });
                 }
               });
@@ -101,7 +103,9 @@ export class PokemonSelectorComponent implements OnInit {
               },
               () => {
                 this.listDataReady = true;
-                if (this.listURLsReady) this.dataReady = true;
+                if (this.listURLsReady) {
+                  this.dataReady = true;
+                }
               });
           }
         });
@@ -112,8 +116,9 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   sortPokemonByID(list) {
+    console.log('Sorting list ', list)
     list.sort(function (a, b) {
-      return a.id - b.id;
+      return a.pokemonId - b.pokemonId;
     });
   }
 
@@ -136,26 +141,6 @@ export class PokemonSelectorComponent implements OnInit {
 
   updateChosenType(type: string) {
     this.chosenType = type;
-  }
-
-  getGenByPokemonID(pokemonid: number): number {
-    if (pokemonid <= 151) {
-      return 1;
-    } else if (151 < pokemonid && pokemonid <= 251) {
-      return 2;
-    } else if (251 < pokemonid && pokemonid <= 386) {
-      return 3;
-    } else if (386 < pokemonid && pokemonid <= 493) {
-      return 4;
-    } else if (493 < pokemonid && pokemonid <= 649) {
-      return 5;
-    } else if (649 < pokemonid && pokemonid <= 721) {
-      return 6;
-    } else if (721 < pokemonid && pokemonid <= 809) {
-      return 7;
-    } else {
-      return 8;
-    }
   }
 
   isPokemonCorrectType(pokemon) {
