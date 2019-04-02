@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SimplePokemon } from './classes';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,7 @@ export class PokemonstorageService {
       this.totalSavedFavorites.push(newCat);
     } else {
       if (this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type)) {
-        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type).
-          pokemonName = pokemon.name;
-        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type).
-          pokemonSprite = pokemon.sprites.front_default;
+        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type).pokemon = pokemon;
       } else {
         this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.push(new FavoriteType(type, pokemon));
       }
@@ -70,12 +68,10 @@ export class FavoriteCategory {
 export class FavoriteType {
   type: string;
   // pokemon: any; // Too heavy on Chrome to use
-  pokemonName: string;
-  pokemonSprite: string;
+  pokemon: SimplePokemon;
 
   constructor(type, pokemon) {
     this.type = type;
-    this.pokemonName = pokemon.name;
-    this.pokemonSprite = pokemon.sprites.front_default;
+    this.pokemon = pokemon;
   }
 }
