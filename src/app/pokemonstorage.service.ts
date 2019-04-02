@@ -25,10 +25,7 @@ export class PokemonstorageService {
       this.totalSavedFavorites.push(newCat);
     } else {
       if (this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type)) {
-        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type).
-          pokemonName = pokemon.name;
-        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type).
-          pokemonSprite = pokemon.pokemonSprite;
+        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type).pokemon = pokemon;
       } else {
         this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.push(new FavoriteType(type, pokemon));
       }
@@ -75,6 +72,6 @@ export class FavoriteType {
 
   constructor(type, pokemon) {
     this.type = type;
-    this.pokemon = new SimplePokemon(pokemon);
+    this.pokemon = pokemon;
   }
 }

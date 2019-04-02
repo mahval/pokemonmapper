@@ -14,6 +14,8 @@ import { SimplePokemon } from 'src/app/classes';
 })
 export class PokemonSelectorComponent implements OnInit {
   dataReady = false;
+  listURLsReady = false;
+  listDataReady = false;
 
   selectedBox = null; // What box user wants to fill
 
@@ -78,26 +80,35 @@ export class PokemonSelectorComponent implements OnInit {
           if (type.name !== 'shadow' && type.name !== 'unknown') {
             this.pfs.getPokemonListBasedOnType(type.name).subscribe(list => {
               list.pokemon.forEach(pokemon => {
-                this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
-                  const found = this.listOfAllPokemon.find(e => e.generationId === this.getGenByPokemonID(pkmn.id));
-                  if (found && !found.pokemonList.find(e => e.id === pkmn.id)) {
-                    found.pokemonList.push(new SimplePokemon(pkmn));
-                    this.sortPokemonByID(found.pokemonList);
-                  }
-                },
-                  error => {
-                    // On error
+                if (pokemon.pokemon.url) {
+                  this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
+                    const found = this.listOfAllPokemon.find(e => e.generationId === this.getGenByPokemonID(pkmn.id));
+                    if (found && !found.pokemonList.find(e => e.pokemonId === pkmn.id)) {
+                      found.pokemonList.push(new SimplePokemon(pkmn));
+                      this.sortPokemonByID(found.pokemonList);
+                    }
                   },
-                  () => {
-                    // this.updateFormGroupValues();
-                    this.dataReady = true;
-                  });
+                    error => {
+                    },
+                    () => {
+                      this.listURLsReady = true;
+                      if (this.listDataReady) this.dataReady = true;
+                    });
+                }
               });
-            });
+            },
+              error => {
+              },
+              () => {
+                this.listDataReady = true;
+                if (this.listURLsReady) this.dataReady = true;
+              });
           }
         });
       });
-    });
+    },
+
+    );
   }
 
   sortPokemonByID(list) {
@@ -207,11 +218,12 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   getFavoriteForCategoryAndType(category: number, type: string) {
+    let savedFavorites = this.pss.getSavedFavoritesFromLocalStorage();
     let favorite;
-    if (this.savedFavorites) {
-      const foundCat = this.savedFavorites.find(c => c.id === category);
-      if (foundCat && foundCat.favoriteTypes) {
-        favorite = foundCat.favoriteTypes.find(t => t.type === type);
+    if (savedFavorites) {
+      const foundCat = savedFavorites.find(c => c.id === category);
+      if (foundCat && foundCat.favoriteTypes && foundCat.favoriteTypes.find(t => t.type === type)) {
+        favorite = foundCat.favoriteTypes.find(t => t.type === type).pokemon;
       }
       if (favorite) {
         return favorite;
