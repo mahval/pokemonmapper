@@ -6,6 +6,7 @@ import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material';
 import { SimplePokemon, getGenByPokemonID } from 'src/app/classes';
+import { listOfAllPokemonSrc } from '../../../pokemon';
 
 @Component({
   selector: 'app-pokemon-selector',
@@ -29,15 +30,7 @@ export class PokemonSelectorComponent implements OnInit {
 
   savedFavorites;
 
-  listOfAllPokemon = [
-    { generationId: 1, pokemonList: [] },
-    { generationId: 2, pokemonList: [] },
-    { generationId: 3, pokemonList: [] },
-    { generationId: 4, pokemonList: [] },
-    { generationId: 5, pokemonList: [] },
-    { generationId: 6, pokemonList: [] },
-    { generationId: 7, pokemonList: [] }
-  ];
+  listOfAllPokemon = [];
 
   generations = [
     { number: 1, show: true },
@@ -74,45 +67,7 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   setAllPokemon() {
-    this.pfs.getAllPokemonGenerations().subscribe(res => {
-      res.forEach(gen => {
-        gen.types.forEach(type => {
-          if (type.name !== 'shadow' && type.name !== 'unknown') {
-            this.pfs.getPokemonListBasedOnType(type.name).subscribe(list => {
-              list.pokemon.forEach(pokemon => {
-                if (pokemon.pokemon.url) {
-                  this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
-                    const found = this.listOfAllPokemon.find(e => e.generationId === getGenByPokemonID(pkmn.id));
-                    if (found && !found.pokemonList.find(e => e.pokemonId === pkmn.id)) {
-                      found.pokemonList.push(new SimplePokemon(pkmn));
-                      this.sortPokemonByID(found.pokemonList);
-                    }
-                  },
-                    error => {
-                    },
-                    () => {
-                      this.listURLsReady = true;
-                      if (this.listDataReady) {
-                        this.dataReady = true;
-                      }
-                    });
-                }
-              });
-            },
-              error => {
-              },
-              () => {
-                this.listDataReady = true;
-                if (this.listURLsReady) {
-                  this.dataReady = true;
-                }
-              });
-          }
-        });
-      });
-    },
-
-    );
+    this.listOfAllPokemon = listOfAllPokemonSrc;
   }
 
   sortPokemonByID(list) {

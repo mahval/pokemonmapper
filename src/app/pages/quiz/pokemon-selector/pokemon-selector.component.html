@@ -1,9 +1,9 @@
-<div class="loadingsuicunecontainer" *ngIf="!dataReady">
+<!-- <div class="loadingsuicunecontainer" *ngIf="!dataReady">
   <img src="assets/sprites/suicunerunning.gif">
   <mat-spinner mode="indeterminate" [diameter]="40" style="margin: 20px auto;"></mat-spinner>
-</div>
+</div> -->
 
-<ng-container *ngIf="dataReady">
+<ng-container>
   <mat-toolbar color="primary">
     <button mat-button (click)="openResetDialog()">Clear table</button>
   </mat-toolbar>
