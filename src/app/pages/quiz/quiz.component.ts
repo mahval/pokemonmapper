@@ -12,7 +12,6 @@ export class QuizComponent implements OnInit {
   dataReady = false;
 
   quizFormGroup: FormGroup;
-  allPokemonTypes = [];
 
   chosenGeneration = 1;
   chosenType = 'Normal';
@@ -54,48 +53,11 @@ export class QuizComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setAllPokemonTypes();
-    this.setAllPokemon();
-  }
-
-  setAllPokemon() {
-    this.pfs.getAllPokemonGenerations().subscribe(res => {
-      res.forEach(gen => {
-        gen.types.forEach(type => {
-          if (type.name !== 'shadow' && type.name !== 'unknown') {
-            this.pfs.getPokemonListBasedOnType(type.name).subscribe(list => {
-              list.pokemon.forEach(pokemon => {
-                this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
-                  const found = this.listOfAllPokemon.find(e => e.generationId === this.getGenByPokemonID(pkmn.id));
-                  if (found && !found.pokemonList.find(e => e.id === pkmn.id)) {
-                    found.pokemonList.push(pkmn);
-                    this.sortPokemonByID(found.pokemonList);
-                  }
-                });
-              });
-            });
-          }
-        });
-      });
-      this.dataReady = true;
-    });
   }
 
   sortPokemonByID(list) {
     list.sort(function (a, b) {
       return a.id - b.id;
-    });
-  }
-
-  setAllPokemonTypes() {
-    this.pfs.getAllPokemonGenerations().subscribe(res => {
-      res.forEach(gen => {
-        gen.types.forEach(type => {
-          if (type.name !== 'shadow' && type.name !== 'unknown') {
-            this.allPokemonTypes.push(type);
-          }
-        });
-      });
     });
   }
 

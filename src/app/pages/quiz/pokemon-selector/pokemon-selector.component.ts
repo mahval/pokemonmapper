@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material';
-import { SimplePokemon, getGenByPokemonID } from 'src/app/classes';
 import { listOfAllPokemonSrc } from '../../../pokemon';
 import { allTypes, allGenerations } from 'src/app/variables';
 
@@ -38,7 +37,7 @@ export class PokemonSelectorComponent implements OnInit {
   constructor(
     private pfs: PokemonfetcherService,
     private router: Router,
-    private pss: PokemonstorageService,
+    public pss: PokemonstorageService,
     public dialog: MatDialog
   ) {
   }
@@ -121,17 +120,14 @@ export class PokemonSelectorComponent implements OnInit {
 
   getFavoriteForCategoryAndType(category: number, type: string) {
     const savedFavorites = this.pss.getSavedFavoritesFromLocalStorage();
-    let favorite;
+    let favorite = null;
     if (savedFavorites) {
       const foundCat = savedFavorites.find(c => c.id === category);
       if (foundCat && foundCat.favoriteTypes && foundCat.favoriteTypes.find(t => t.type === type)) {
         favorite = foundCat.favoriteTypes.find(t => t.type === type).pokemon;
       }
-      if (favorite) {
-        return favorite;
-      }
+      return favorite;
     }
-    return null;
   }
 
   clearTable() {
