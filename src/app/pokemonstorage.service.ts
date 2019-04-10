@@ -8,6 +8,9 @@ export class PokemonstorageService {
 
   totalSavedFavorites = [];
 
+  chosenCategory;
+  chosenType;
+
   constructor() { }
 
   savePokemon(category: number, type: string, pokemon) {
@@ -35,6 +38,25 @@ export class PokemonstorageService {
 
   getSavedFavoritesFromLocalStorage() {
     return JSON.parse(localStorage.getItem('pokemonMapperFavorites'));
+  }
+
+  selectTableBox(generation: number, type: string) {
+    // console.log('selected generation ', generation, ' and type ', type);
+    if (generation === 0) {
+      // This is all gens
+      // console.log('For all gens i see');
+    }
+    this.chosenCategory = generation;
+    this.chosenType = type;
+  }
+
+  getChosenCategory() {
+    return this.chosenCategory;
+  }
+
+  getChosenType() {
+    // console.log("chosenType: --->", this.chosenType)
+    return this.chosenType;
   }
 
   getFavoriteForCategoryAndType(category: number, type: string) {

@@ -1,65 +1,20 @@
-<div class="loadingsuicunecontainer" *ngIf="!dataReady">
+<!-- <div class="loadingsuicunecontainer" *ngIf="!dataReady">
   <img src="assets/sprites/suicunerunning.gif">
   <mat-spinner mode="indeterminate" [diameter]="40" style="margin: 20px auto;"></mat-spinner>
-</div>
+</div> -->
 
-<ng-container *ngIf="dataReady">
+<ng-container>
   <mat-toolbar color="primary">
     <button mat-button (click)="openResetDialog()">Clear table</button>
   </mat-toolbar>
   <!-- <app-pokemon-table></app-pokemon-table> -->
 
   <div class="contentcontainer centered">
-    <div class="tablecontainer">
-      <table>
-        <tr>
-          <th class="nothing-td"></th>
-          <th *ngFor="let type of allPokemonTypes" class="type-td">
-            {{ type.name }}
-          </th>
-        </tr>
-        <tr *ngFor="let generation of generations">
-          <td class="generation-td">Gen {{ generation.number }}</td>
-          <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(generation.number, type.name)"
-            class="selectable favorite-td"
-            [ngClass]="{ 'selected-td': isTableBoxSelected(generation.number, type.name) }">
-            <!-- {{ savedFavorites.}} -->
-            <ng-container *ngIf="getFavoriteForCategoryAndType(generation.number, type.name)">
-              <!-- {{ getFavoriteForCategoryAndType(generation.number, type.name)?.pokemonName }} -->
-              <img [src]="getFavoriteForCategoryAndType(generation.number, type.name)?.pokemonSprite">
-            </ng-container>
-          </td>
-        </tr>
-        <tr>
-          <td>Favorite</td>
-          <td *ngFor="let type of allPokemonTypes" (click)="selectTableBox(0, type.name)" class="selectable favorite-td"
-            [ngClass]="{ 'selected-td': isTableBoxSelected(0, type.name) }"></td>
-        </tr>
-      </table>
-    </div>
+    <app-pokemon-table></app-pokemon-table>
 
-    <!-- <div *ngIf="selectedBox">
-      <form [formGroup]="quizFormGroup">
-        <mat-form-field>
-          <mat-select formControlName="chosenGeneration" placeholder="Select generation">
-            <mat-option *ngFor="let generation of generations" [value]="generation.number">
-              Generation {{ generation.number }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select formControlName="chosenType" placeholder="Select type">
-            <mat-option *ngFor="let type of allPokemonTypes" [value]="type.name">
-              {{ type.name | titlecase }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </form>
-    </div> -->
-
-    <div class="pokemonlistcontainer" *ngIf="(chosenGeneration || chosenType)">
+    <div class="pokemonlistcontainer" *ngIf="(pss.chosenCategory || pss.chosenType)">
       <ng-container *ngFor="let generation of listOfAllPokemon">
-        <ng-container *ngIf="generation.generationId === chosenGeneration">
+        <ng-container *ngIf="generation.generationId === pss.chosenCategory">
           <div class="generationbox">
             <button mat-button (click)="toggleGeneration(generation.generationId)">
               <p class="mat-h3">
@@ -69,13 +24,13 @@
                   <mat-icon *ngIf="showGeneration(generation.generationId)">keyboard_arrow_up</mat-icon>
                 </span>
                 <br>
-                <span>Favorite {{ chosenType }} type</span>
+                <span>Favorite {{ pss.chosenType }} type</span>
               </p>
             </button>
             <div *ngIf="showGeneration(generation.generationId)">
               <ng-container *ngFor="let pokemon of generation.pokemonList">
                 <div class="pokemonbox" *ngIf="isPokemonCorrectType(pokemon)">
-                  <div class="pokemonimage" (click)="savePokemonAsFavorite(chosenGeneration, chosenType, pokemon)"
+                  <div class="pokemonimage" (click)="savePokemonAsFavorite(pss.chosenCategory, pss.chosenType, pokemon)"
                   [ngClass]="{'jumping': isSelected(pokemon)}">
                     <span class="helper"></span>
                     <img *ngIf="pokemon.pokemonSprite" [src]="pokemon.pokemonSprite">

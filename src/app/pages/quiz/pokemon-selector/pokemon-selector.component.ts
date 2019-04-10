@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material';
-import { SimplePokemon } from 'src/app/classes';
+import { listOfAllPokemonSrc } from '../../../pokemon';
+import { allTypes, allGenerations } from 'src/app/variables';
 
 @Component({
   selector: 'app-pokemon-selector',
@@ -22,144 +23,60 @@ export class PokemonSelectorComponent implements OnInit {
   quizFormGroup: FormGroup;
   allPokemonTypes = [];
 
-  chosenGeneration;
-  chosenType;
+  chosenCategory = null;
+  chosenType = '';
 
   selectedPokemon;
 
   savedFavorites;
 
-  listOfAllPokemon = [
-    { generationId: 1, pokemonList: [] },
-    { generationId: 2, pokemonList: [] },
-    { generationId: 3, pokemonList: [] },
-    { generationId: 4, pokemonList: [] },
-    { generationId: 5, pokemonList: [] },
-    { generationId: 6, pokemonList: [] },
-    { generationId: 7, pokemonList: [] }
-  ];
+  listOfAllPokemon = [];
 
-  generations = [
-    { number: 1, show: true },
-    { number: 2, show: true },
-    { number: 3, show: true },
-    { number: 4, show: true },
-    { number: 5, show: true },
-    { number: 6, show: true },
-    { number: 7, show: true },
-  ];
+  generations = [];
 
   constructor(
     private pfs: PokemonfetcherService,
-    private fb: FormBuilder,
     private router: Router,
-    private pss: PokemonstorageService,
+    public pss: PokemonstorageService,
     public dialog: MatDialog
   ) {
-    // this.quizFormGroup = this.fb.group({
-    //   chosenType: 'normal',
-    //   chosenGeneration: 2
-    // });
-
-    // this.quizFormGroup.valueChanges.subscribe(() => {
-    //   this.updateFormGroupValues();
-    //   this.resetGenerationToggles();
-    // });
   }
 
   ngOnInit() {
-    this.setAllPokemonTypes();
-    this.setAllPokemon();
+    this.allPokemonTypes = allTypes;
+    this.generations = allGenerations;
+    this.listOfAllPokemon = listOfAllPokemonSrc;
+    this.chosenCategory = this.pss.getChosenCategory();
+    this.chosenType = this.pss.getChosenType();
+
+
     this.updateFavoritesInTable();
   }
 
-  setAllPokemon() {
-    this.pfs.getAllPokemonGenerations().subscribe(res => {
-      res.forEach(gen => {
-        gen.types.forEach(type => {
-          if (type.name !== 'shadow' && type.name !== 'unknown') {
-            this.pfs.getPokemonListBasedOnType(type.name).subscribe(list => {
-              list.pokemon.forEach(pokemon => {
-                if (pokemon.pokemon.url) {
-                  this.pfs.getPokemonFromURL(pokemon.pokemon.url).subscribe(pkmn => {
-                    const found = this.listOfAllPokemon.find(e => e.generationId === this.getGenByPokemonID(pkmn.id));
-                    if (found && !found.pokemonList.find(e => e.pokemonId === pkmn.id)) {
-                      found.pokemonList.push(new SimplePokemon(pkmn));
-                      this.sortPokemonByID(found.pokemonList);
-                    }
-                  },
-                    error => {
-                    },
-                    () => {
-                      this.listURLsReady = true;
-                      if (this.listDataReady) this.dataReady = true;
-                    });
-                }
-              });
-            },
-              error => {
-              },
-              () => {
-                this.listDataReady = true;
-                if (this.listURLsReady) this.dataReady = true;
-              });
-          }
-        });
-      });
-    },
-
-    );
-  }
-
-  sortPokemonByID(list) {
-    list.sort(function (a, b) {
-      return a.id - b.id;
-    });
-  }
-
-  setAllPokemonTypes() {
-    this.pfs.getAllPokemonGenerations().subscribe(res => {
-      res.forEach(gen => {
-        gen.types.forEach(type => {
-          if (type.name !== 'shadow' && type.name !== 'unknown') {
-            this.allPokemonTypes.push(type);
-          }
-        });
-      });
-    });
-  }
-
-  // updateFormGroupValues() {
-  //   this.chosenGeneration = this.quizFormGroup.get('chosenGeneration').value;
-  //   this.chosenType = this.quizFormGroup.get('chosenType').value;
-  // }
-
-  updateChosenType(type: string) {
-    this.chosenType = type;
-  }
-
-  getGenByPokemonID(pokemonid: number): number {
-    if (pokemonid <= 151) {
-      return 1;
-    } else if (151 < pokemonid && pokemonid <= 251) {
-      return 2;
-    } else if (251 < pokemonid && pokemonid <= 386) {
-      return 3;
-    } else if (386 < pokemonid && pokemonid <= 493) {
-      return 4;
-    } else if (493 < pokemonid && pokemonid <= 649) {
-      return 5;
-    } else if (649 < pokemonid && pokemonid <= 721) {
-      return 6;
-    } else if (721 < pokemonid && pokemonid <= 809) {
-      return 7;
-    } else {
-      return 8;
-    }
-  }
-
   isPokemonCorrectType(pokemon) {
-    return (pokemon.types.find(t => t.type.name.toLowerCase() === this.chosenType.toLowerCase()));
+    // console.log("pokemon.types: ", pokemon.types)
+    // return (pokemon.types.find(t => {
+    //   if (t.type.name && this.chosenType) {
+    //     return (t.type.name.toLowerCase() === this.chosenType.toLowerCase());
+    //   }
+    // }));
+    // console.log("chosenType: ", this.pss.getChosenType())
+    this.updateChosenType();
+    if (this.chosenType) {
+      return (pokemon.types.find(t => t.type.name.toLowerCase() === this.chosenType.toLowerCase()));
+    }
+
+    // return pokemon.types.find(e => {
+    //   e.type.name.toLowerCase() === this.pss.getChosenType().toLowerCase()
+    // });
+  }
+
+  updateChosenCategory() {
+    this.chosenCategory = this.pss.getChosenCategory();
+  }
+
+  updateChosenType() {
+    this.chosenType = this.pss.getChosenType();
   }
 
   showGeneration(n: number) {
@@ -178,29 +95,13 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   selectPokemon(pokemon) {
-    console.log(pokemon);
     this.selectedPokemon = pokemon;
   }
 
   isSelected(pokemon) {
     if (this.selectedPokemon) {
-      return (pokemon.id === this.selectedPokemon.id);
+      return (pokemon.pokemonId === this.selectedPokemon.pokemonId);
     }
-  }
-
-  selectTableBox(generation: number, type: string) {
-    if (generation === 0) {
-      // This is all gens
-    }
-    console.log('selected generation ', generation, ' and type ', type, ' with pokemon ');
-    this.chosenGeneration = generation;
-    this.chosenType = type;
-    // TO GET POKEMON:
-    // getFavoriteForCategoryAndType(generation.number, type.name)
-  }
-
-  isTableBoxSelected(generation: number, type: string) {
-    return (this.chosenGeneration === generation && this.chosenType === type);
   }
 
   savePokemonAsFavorite(generation: number, type: string, pokemon) {
@@ -218,18 +119,15 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   getFavoriteForCategoryAndType(category: number, type: string) {
-    let savedFavorites = this.pss.getSavedFavoritesFromLocalStorage();
-    let favorite;
+    const savedFavorites = this.pss.getSavedFavoritesFromLocalStorage();
+    let favorite = null;
     if (savedFavorites) {
       const foundCat = savedFavorites.find(c => c.id === category);
       if (foundCat && foundCat.favoriteTypes && foundCat.favoriteTypes.find(t => t.type === type)) {
         favorite = foundCat.favoriteTypes.find(t => t.type === type).pokemon;
       }
-      if (favorite) {
-        return favorite;
-      }
+      return favorite;
     }
-    return null;
   }
 
   clearTable() {
