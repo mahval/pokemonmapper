@@ -1,3 +1,10 @@
+<!-- Caching of sprites -->
+<ng-container *ngFor="let generation of listOfAllPokemon">
+  <ng-container *ngFor="let pokemon of generation.pokemonList">
+    <img *ngIf="pokemon.pokemonSprite" [src]="pokemon.pokemonSprite" style="display: none;">
+  </ng-container>
+</ng-container>
+
 <div class="contentcontainer">
   <div class="infocontainer">
     <h1 class="mat-h1">Find your favorites quickly</h1>
@@ -30,8 +37,8 @@
     <img src="assets/gen2sprites/Spr_2s_133.png">
   </div>
   <div class="mainbutton">
-      <button mat-raised-button color="primary" (click)="start()">
-        Find your favorites
-      </button>
-    </div>
+    <button mat-raised-button color="primary" (click)="start()">
+      Find your favorites
+    </button>
+  </div>
 </div>
