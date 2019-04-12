@@ -12,7 +12,7 @@
   <div class="contentcontainer centered">
     <app-pokemon-table></app-pokemon-table>
 
-    <div class="pokemonlistcontainer" *ngIf="(pss.chosenCategory || pss.chosenType)">
+    <!-- <div class="pokemonlistcontainer" *ngIf="(pss.chosenCategory || pss.chosenType)">
       <ng-container *ngFor="let generation of listOfAllPokemon">
         <ng-container *ngIf="generation.generationId === pss.chosenCategory">
           <div class="generationbox">
@@ -42,9 +42,6 @@
                     </button>
                   </div>
                   <div class="pokemoninfo clickable" (click)="selectPokemon(pokemon)" *ngIf="!isSelected(pokemon)">
-
-                    <!-- <p class="mat-small">#{{ pokemon?.id }} {{ pokemon?.name | titlecase }}</p> -->
-                    <!-- <button class="small-button" mat-raised-button color="accent" (click)="selectPokemon(pokemon)"> -->
                     <p class="mat-body pokemonid">#{{ pokemon?.pokemonId }}</p>
                     <p class="mat-body"> {{ pokemon?.pokemonName | titlecase }}</p>
                     <p class="mat-body pokemonid">
@@ -61,7 +58,7 @@
           </div>
         </ng-container>
       </ng-container>
-    </div>
+    </div> -->
   </div>
 
 </ng-container>

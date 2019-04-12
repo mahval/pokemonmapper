@@ -21,18 +21,16 @@ export class PokemonSelectorComponent implements OnInit {
   selectedBox = null; // What box user wants to fill
 
   quizFormGroup: FormGroup;
-  allPokemonTypes = [];
-
-  chosenCategory = null;
-  chosenType = '';
 
   selectedPokemon;
 
   savedFavorites;
 
+  allPokemonTypes = [];
   listOfAllPokemon = [];
-
   generations = [];
+  chosenCategory = null;
+  chosenType = '';
 
   constructor(
     private pfs: PokemonfetcherService,

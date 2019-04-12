@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonfetcherService } from 'src/app/pokemonfetcher.service';
 import { allTypes, allGenerations } from '../../../variables';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
+import { MatDialog } from '@angular/material';
+import { SelectordialogComponent } from '../selectordialog/selectordialog.component';
+import { listOfAllPokemonSrc } from 'src/app/pokemon';
 
 @Component({
   selector: 'app-pokemon-table',
@@ -14,24 +17,44 @@ export class PokemonTableComponent implements OnInit {
   chosenCategory;
   chosenType;
 
+
   allPokemonTypes = [];
   generations = [];
+  listOfAllPokemon = [];
 
   constructor(
     private pfs: PokemonfetcherService,
-    private pss: PokemonstorageService
+    private pss: PokemonstorageService,
+    public dialog: MatDialog
   ) {
     this.allPokemonTypes = allTypes;
     this.generations = allGenerations;
+    this.listOfAllPokemon = listOfAllPokemonSrc;
   }
 
   ngOnInit() {
+  }
+
+  selectTableBox_old(generation: number, type: string) {
+    this.pss.selectTableBox(generation, type);
+    this.updateChosenCategory();
+    this.updateChosenType();
   }
 
   selectTableBox(generation: number, type: string) {
     this.pss.selectTableBox(generation, type);
     this.updateChosenCategory();
     this.updateChosenType();
+
+    const dialogRef = this.dialog.open(SelectordialogComponent, {
+      data: {
+        listOfAllPokemon: this.listOfAllPokemon
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 
   updateChosenCategory() {

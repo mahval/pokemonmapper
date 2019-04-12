@@ -18,6 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PokemonSelectorComponent } from './pages/quiz/pokemon-selector/pokemon-selector.component';
 import { PokemonTableComponent } from './pages/quiz/pokemon-table/pokemon-table.component';
 import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component';
+import { SelectordialogComponent } from './pages/quiz/selectordialog/selectordialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component'
     ResultComponent,
     PokemonSelectorComponent,
     PokemonTableComponent,
-    ConfirmdialogComponent
+    ConfirmdialogComponent,
+    SelectordialogComponent
   ],
   imports: [
     BrowserModule,
@@ -46,8 +48,8 @@ import { ConfirmdialogComponent } from './confirmdialog/confirmdialog.component'
     MatToolbarModule,
     MatDialogModule,
   ],
-  providers: [ConfirmdialogComponent],
-  entryComponents: [ConfirmdialogComponent],
+  providers: [ConfirmdialogComponent, SelectordialogComponent],
+  entryComponents: [ConfirmdialogComponent, SelectordialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
