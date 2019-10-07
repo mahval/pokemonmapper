@@ -1,15 +1,16 @@
-
-  <!-- <div class="loadingsuicunecontainer" *ngIf="!dataReady">
+<!-- <div class="loadingsuicunecontainer" *ngIf="!dataReady">
   <img src="assets/sprites/suicunerunning.gif">
   <mat-spinner mode="indeterminate" [diameter]="40" style="margin: 20px auto;"></mat-spinner>
 </div> -->
 
-  <ng-container *ngIf="(pss.chosenCategory || pss.chosenType)">
-    <ng-container *ngFor="let generation of listOfAllPokemon">
-      <ng-container *ngIf="generation.generationId === pss.chosenCategory">
-          <h3 mat-dialog-title>Generation {{ generation.generationId }}</h3>
-          <h3 mat-dialog-title>Favorite {{ pss.chosenType }} type</h3>
-          <div mat-dialog-content>
+<ng-container *ngIf="(pss.chosenCategory || pss.chosenType)">
+  <ng-container *ngFor="let generation of listOfAllPokemon">
+    <ng-container *ngIf="generation.generationId === pss.chosenCategory">
+      <div class="dialog-header">
+        <h2 mat-dialog-title>Generation {{ generation.generationId }}</h2>
+        <p mat-dialog-title>Favorite {{ pss.chosenType }} type</p>
+      </div>
+      <div mat-dialog-content>
         <div class="generationbox">
           <!-- <button mat-button (click)="toggleGeneration(generation.generationId)">
             <p class="mat-h3">
@@ -52,14 +53,13 @@
               </div>
             </ng-container>
           </div>
-          <mat-divider [inset]="true"></mat-divider>
         </div>
-</div>
+      </div>
 
-      </ng-container>
     </ng-container>
   </ng-container>
-<div mat-dialog-actions>
+</ng-container>
+<!-- <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()" cdkFocusInitial></button>
   <button mat-button (click)="reset()"></button>
-</div>
+</div> -->

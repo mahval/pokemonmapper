@@ -1,4 +1,5 @@
 <!-- Caching of sprites -->
+<!-- TODO: Have to cache on /quiz too -->
 <ng-container *ngFor="let generation of listOfAllPokemon">
   <ng-container *ngFor="let pokemon of generation.pokemonList">
     <img *ngIf="pokemon.pokemonSprite" [src]="pokemon.pokemonSprite" style="display: none;">
