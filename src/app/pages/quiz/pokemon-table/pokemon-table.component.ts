@@ -9,14 +9,12 @@ import { listOfAllPokemonSrc } from 'src/app/pokemon';
 @Component({
   selector: 'app-pokemon-table',
   templateUrl: './pokemon-table.component.html',
-  styleUrls: ['./pokemon-table.component.scss']
 })
 export class PokemonTableComponent implements OnInit {
   dataReady = false;
 
   chosenCategory;
   chosenType;
-
 
   allPokemonTypes = [];
   generations = [];
@@ -32,8 +30,7 @@ export class PokemonTableComponent implements OnInit {
     this.listOfAllPokemon = listOfAllPokemonSrc;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   selectTableBox_old(generation: number, type: string) {
     this.pss.selectTableBox(generation, type);
@@ -48,13 +45,11 @@ export class PokemonTableComponent implements OnInit {
 
     const dialogRef = this.dialog.open(SelectordialogComponent, {
       data: {
-        listOfAllPokemon: this.listOfAllPokemon
-      }
+        listOfAllPokemon: this.listOfAllPokemon,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   updateChosenCategory() {
@@ -66,16 +61,20 @@ export class PokemonTableComponent implements OnInit {
   }
 
   isTableBoxSelected(generation: number, type: string) {
-    return (this.chosenCategory === generation && this.chosenType === type);
+    return this.chosenCategory === generation && this.chosenType === type;
   }
 
   getFavoriteForCategoryAndType(category: number, type: string) {
     const savedFavorites = this.pss.getSavedFavoritesFromLocalStorage();
     let favorite;
     if (savedFavorites) {
-      const foundCat = savedFavorites.find(c => c.id === category);
-      if (foundCat && foundCat.favoriteTypes && foundCat.favoriteTypes.find(t => t.type === type)) {
-        favorite = foundCat.favoriteTypes.find(t => t.type === type).pokemon;
+      const foundCat = savedFavorites.find((c) => c.id === category);
+      if (
+        foundCat &&
+        foundCat.favoriteTypes &&
+        foundCat.favoriteTypes.find((t) => t.type === type)
+      ) {
+        favorite = foundCat.favoriteTypes.find((t) => t.type === type).pokemon;
       }
       if (favorite) {
         return favorite;

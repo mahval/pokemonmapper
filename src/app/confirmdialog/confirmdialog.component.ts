@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 @Component({
   selector: 'app-confirmdialog',
   templateUrl: './confirmdialog.component.html',
-  styleUrls: ['./confirmdialog.component.scss']
 })
 export class ConfirmdialogComponent implements OnInit {
   yesOptionTitle: string;
@@ -22,8 +21,7 @@ export class ConfirmdialogComponent implements OnInit {
     this.question = data.question;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   reset() {
     this.dialogRef.close(true);
@@ -32,5 +30,4 @@ export class ConfirmdialogComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(false);
   }
-
 }

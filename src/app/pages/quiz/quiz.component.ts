@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit {
   dataReady = false;
@@ -23,7 +22,7 @@ export class QuizComponent implements OnInit {
     { generationId: 4, pokemonList: [] },
     { generationId: 5, pokemonList: [] },
     { generationId: 6, pokemonList: [] },
-    { generationId: 7, pokemonList: [] }
+    { generationId: 7, pokemonList: [] },
   ];
 
   generations = [
@@ -43,7 +42,7 @@ export class QuizComponent implements OnInit {
   ) {
     this.quizFormGroup = this.fb.group({
       chosenType: 'normal',
-      chosenGeneration: 1
+      chosenGeneration: 1,
     });
 
     this.quizFormGroup.valueChanges.subscribe(() => {
@@ -52,8 +51,7 @@ export class QuizComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   sortPokemonByID(list) {
     list.sort(function (a, b) {
@@ -91,15 +89,19 @@ export class QuizComponent implements OnInit {
   }
 
   isPokemonCorrectType(pokemon) {
-    return (pokemon.types.find(t => t.type.name.toLowerCase() === this.chosenType.toLowerCase()));
+    return pokemon.types.find(
+      (t) => t.type.name.toLowerCase() === this.chosenType.toLowerCase()
+    );
   }
 
   showGeneration(n: number) {
-    return this.generations.find(e => e.number === n).show;
+    return this.generations.find((e) => e.number === n).show;
   }
 
   toggleGeneration(n: number) {
-    this.generations.find(e => e.number === n).show = !this.generations.find(e => e.number === n).show;
+    this.generations.find((e) => e.number === n).show = !this.generations.find(
+      (e) => e.number === n
+    ).show;
   }
 
   resetGenerationToggles() {
@@ -110,11 +112,10 @@ export class QuizComponent implements OnInit {
   }
 
   selectPokemon(pokemon) {
-    console.log('You have chosen ', pokemon)
+    console.log('You have chosen ', pokemon);
   }
 
   goHome() {
     this.router.navigate(['']);
   }
-
 }

@@ -11,7 +11,6 @@ import { allTypes, allGenerations } from 'src/app/variables';
 @Component({
   selector: 'app-pokemon-selector',
   templateUrl: './pokemon-selector.component.html',
-  styleUrls: ['./pokemon-selector.component.scss']
 })
 export class PokemonSelectorComponent implements OnInit {
   dataReady = false;
@@ -37,8 +36,7 @@ export class PokemonSelectorComponent implements OnInit {
     private router: Router,
     public pss: PokemonstorageService,
     public dialog: MatDialog
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.allPokemonTypes = allTypes;
@@ -46,7 +44,6 @@ export class PokemonSelectorComponent implements OnInit {
     this.listOfAllPokemon = listOfAllPokemonSrc;
     this.chosenCategory = this.pss.getChosenCategory();
     this.chosenType = this.pss.getChosenType();
-
 
     this.updateFavoritesInTable();
   }
@@ -61,7 +58,9 @@ export class PokemonSelectorComponent implements OnInit {
     // console.log("chosenType: ", this.pss.getChosenType())
     this.updateChosenType();
     if (this.chosenType) {
-      return (pokemon.types.find(t => t.type.name.toLowerCase() === this.chosenType.toLowerCase()));
+      return pokemon.types.find(
+        (t) => t.type.name.toLowerCase() === this.chosenType.toLowerCase()
+      );
     }
 
     // return pokemon.types.find(e => {
@@ -78,11 +77,13 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   showGeneration(n: number) {
-    return this.generations.find(e => e.number === n).show;
+    return this.generations.find((e) => e.number === n).show;
   }
 
   toggleGeneration(n: number) {
-    this.generations.find(e => e.number === n).show = !this.generations.find(e => e.number === n).show;
+    this.generations.find((e) => e.number === n).show = !this.generations.find(
+      (e) => e.number === n
+    ).show;
   }
 
   resetGenerationToggles() {
@@ -98,7 +99,7 @@ export class PokemonSelectorComponent implements OnInit {
 
   isSelected(pokemon) {
     if (this.selectedPokemon) {
-      return (pokemon.pokemonId === this.selectedPokemon.pokemonId);
+      return pokemon.pokemonId === this.selectedPokemon.pokemonId;
     }
   }
 
@@ -107,7 +108,14 @@ export class PokemonSelectorComponent implements OnInit {
       // This is all gens
     }
     this.pss.savePokemon(generation, type, pokemon);
-    console.log('selected generation ', generation, ' and type ', type, ' with pokemon ', pokemon);
+    console.log(
+      'selected generation ',
+      generation,
+      ' and type ',
+      type,
+      ' with pokemon ',
+      pokemon
+    );
 
     this.updateFavoritesInTable();
   }
@@ -120,9 +128,13 @@ export class PokemonSelectorComponent implements OnInit {
     const savedFavorites = this.pss.getSavedFavoritesFromLocalStorage();
     let favorite = null;
     if (savedFavorites) {
-      const foundCat = savedFavorites.find(c => c.id === category);
-      if (foundCat && foundCat.favoriteTypes && foundCat.favoriteTypes.find(t => t.type === type)) {
-        favorite = foundCat.favoriteTypes.find(t => t.type === type).pokemon;
+      const foundCat = savedFavorites.find((c) => c.id === category);
+      if (
+        foundCat &&
+        foundCat.favoriteTypes &&
+        foundCat.favoriteTypes.find((t) => t.type === type)
+      ) {
+        favorite = foundCat.favoriteTypes.find((t) => t.type === type).pokemon;
       }
       return favorite;
     }
@@ -141,20 +153,18 @@ export class PokemonSelectorComponent implements OnInit {
         title: 'Reset table',
         question: 'Do you want to delete all content in your table?',
         yesOptionTitle: 'Yes',
-        noOptionTitle: 'No'
-      }
+        noOptionTitle: 'No',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.clearTable();
       }
     });
   }
 
-
   goHome() {
     this.router.navigate(['']);
   }
-
 }
