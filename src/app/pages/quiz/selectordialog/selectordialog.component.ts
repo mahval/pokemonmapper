@@ -2,15 +2,14 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { listOfAllPokemonSrc } from 'src/app/pokemon';
-import { allTypes, allGenerations } from 'src/app/variables';
+import { allGenerations } from 'src/app/variables';
 
 @Component({
   selector: 'app-selectordialog',
   templateUrl: './selectordialog.component.html',
-  styleUrls: ['./selectordialog.component.scss']
+  styleUrls: ['./selectordialog.component.scss'],
 })
 export class SelectordialogComponent implements OnInit {
-  allPokemonTypes = [];
   listOfAllPokemon = [];
   generations = [];
   chosenCategory = null;
@@ -20,18 +19,13 @@ export class SelectordialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SelectordialogComponent>,
     @Inject(MAT_DIALOG_DATA) data,
-    public pss: PokemonstorageService,
+    public pss: PokemonstorageService
   ) {
     this.listOfAllPokemon = data.listOfAllPokemon;
-    // this.noOptionTitle = data.noOptionTitle;
-    // this.title = data.title;
-    // this.question = data.question;
   }
 
   ngOnInit() {
-    this.allPokemonTypes = allTypes;
     this.generations = allGenerations;
-    // this.listOfAllPokemon = listOfAllPokemonSrc;
     this.chosenCategory = this.pss.getChosenCategory();
     this.chosenType = this.pss.getChosenType();
   }
@@ -39,17 +33,22 @@ export class SelectordialogComponent implements OnInit {
   isPokemonCorrectType(pokemon) {
     this.updateChosenType();
     if (this.chosenType) {
-      return (pokemon.types.find(t => t.type.name.toLowerCase() === this.chosenType.toLowerCase()));
+      return pokemon.types.find(
+        (t) => t.type.name.toLowerCase() === this.chosenType.toLowerCase()
+      );
     }
   }
 
   savePokemonAsFavorite(generation: number, type: string, pokemon) {
-    // this.selectPokemon(pokemon);
-    if (generation === 0) {
-      // This is all gens
-    }
     this.pss.savePokemon(generation, type, pokemon);
-    console.log('selected generation ', generation, ' and type ', type, ' with pokemon ', pokemon);
+    console.log(
+      'selected generation ',
+      generation,
+      ' and type ',
+      type,
+      ' with pokemon ',
+      pokemon
+    );
     this.onNoClick();
   }
 
@@ -60,18 +59,20 @@ export class SelectordialogComponent implements OnInit {
   updateChosenType() {
     this.chosenType = this.pss.getChosenType();
   }
-  
+
   toggleGeneration(n: number) {
-    this.generations.find(e => e.number === n).show = !this.generations.find(e => e.number === n).show;
+    this.generations.find((e) => e.number === n).show = !this.generations.find(
+      (e) => e.number === n
+    ).show;
   }
 
   showGeneration(n: number) {
-    return this.generations.find(e => e.number === n).show;
+    return this.generations.find((e) => e.number === n).show;
   }
 
   isSelected(pokemon) {
     if (this.selectedPokemon) {
-      return (pokemon.pokemonId === this.selectedPokemon.pokemonId);
+      return pokemon.pokemonId === this.selectedPokemon.pokemonId;
     }
   }
 
@@ -86,6 +87,4 @@ export class SelectordialogComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(false);
   }
-
-
 }

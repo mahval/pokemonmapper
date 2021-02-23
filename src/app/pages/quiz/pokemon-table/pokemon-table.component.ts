@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonfetcherService } from 'src/app/pokemonfetcher.service';
-import { allTypes, allGenerations } from '../../../variables';
+import { pokemonTypes, allGenerations } from '../../../variables';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { MatDialog } from '@angular/material';
 import { SelectordialogComponent } from '../selectordialog/selectordialog.component';
@@ -20,12 +20,8 @@ export class PokemonTableComponent implements OnInit {
   generations = [];
   listOfAllPokemon = [];
 
-  constructor(
-    private pfs: PokemonfetcherService,
-    private pss: PokemonstorageService,
-    public dialog: MatDialog
-  ) {
-    this.allPokemonTypes = allTypes;
+  constructor(private pss: PokemonstorageService, public dialog: MatDialog) {
+    this.allPokemonTypes = pokemonTypes;
     this.generations = allGenerations;
     this.listOfAllPokemon = listOfAllPokemonSrc;
   }

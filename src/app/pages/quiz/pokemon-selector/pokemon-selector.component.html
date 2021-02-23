@@ -1,64 +1,9 @@
-<!-- <div class="loadingsuicunecontainer" *ngIf="!dataReady">
-  <img src="assets/sprites/suicunerunning.gif">
-  <mat-spinner mode="indeterminate" [diameter]="40" style="margin: 20px auto;"></mat-spinner>
-</div> -->
-
 <ng-container>
   <mat-toolbar color="primary">
     <button mat-button (click)="openResetDialog()">Clear table</button>
   </mat-toolbar>
-  <!-- <app-pokemon-table></app-pokemon-table> -->
 
   <div class="contentcontainer centered">
     <app-pokemon-table></app-pokemon-table>
-
-    <!-- <div class="pokemonlistcontainer" *ngIf="(pss.chosenCategory || pss.chosenType)">
-      <ng-container *ngFor="let generation of listOfAllPokemon">
-        <ng-container *ngIf="generation.generationId === pss.chosenCategory">
-          <div class="generationbox">
-            <button mat-button (click)="toggleGeneration(generation.generationId)">
-              <p class="mat-h3">
-                <span>
-                  Generation {{ generation.generationId }}
-                  <mat-icon *ngIf="!showGeneration(generation.generationId)">keyboard_arrow_down</mat-icon>
-                  <mat-icon *ngIf="showGeneration(generation.generationId)">keyboard_arrow_up</mat-icon>
-                </span>
-                <br>
-                <span>Favorite {{ pss.chosenType }} type</span>
-              </p>
-            </button>
-            <div *ngIf="showGeneration(generation.generationId)">
-              <ng-container *ngFor="let pokemon of generation.pokemonList">
-                <div class="pokemonbox" *ngIf="isPokemonCorrectType(pokemon)">
-                  <div class="pokemonimage" (click)="savePokemonAsFavorite(pss.chosenCategory, pss.chosenType, pokemon)"
-                  [ngClass]="{'jumping': isSelected(pokemon)}">
-                    <span class="helper"></span>
-                    <img *ngIf="pokemon.pokemonSprite" [src]="pokemon.pokemonSprite">
-                    <img *ngIf="!pokemon.pokemonSprite" src="assets/sprites/ghost.png">
-                  </div>
-                  <div class="pokemoninfo" *ngIf="isSelected(pokemon)">
-                    <button mat-raised-button color="primary">
-                      Choose {{ pokemon?.pokemonName | titlecase }}
-                    </button>
-                  </div>
-                  <div class="pokemoninfo clickable" (click)="selectPokemon(pokemon)" *ngIf="!isSelected(pokemon)">
-                    <p class="mat-body pokemonid">#{{ pokemon?.pokemonId }}</p>
-                    <p class="mat-body"> {{ pokemon?.pokemonName | titlecase }}</p>
-                    <p class="mat-body pokemonid">
-                      <ng-container *ngFor="let type of pokemon.types; let ndx = index">
-                        <span *ngIf="ndx > 0"> / </span>
-                        {{ type.type.name | titlecase }}
-                      </ng-container>
-                    </p>
-                  </div>
-                </div>
-              </ng-container>
-            </div>
-            <mat-divider [inset]="true"></mat-divider>
-          </div>
-        </ng-container>
-      </ng-container>
-    </div> -->
   </div>
-
 </ng-container>

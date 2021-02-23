@@ -5,15 +5,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
-  MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule,
-  MatSelectModule, MatDividerModule, MatProgressSpinnerModule, MatToolbarModule,
-  MatDialogModule
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatIconModule,
+  MatSelectModule,
+  MatDividerModule,
+  MatProgressSpinnerModule,
+  MatToolbarModule,
+  MatDialogModule,
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { IntroComponent } from './pages/intro/intro.component';
-import { QuizComponent } from './pages/quiz/quiz.component';
-import { ResultComponent } from './pages/result/result.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PokemonSelectorComponent } from './pages/quiz/pokemon-selector/pokemon-selector.component';
 import { PokemonTableComponent } from './pages/quiz/pokemon-table/pokemon-table.component';
@@ -24,12 +28,10 @@ import { SelectordialogComponent } from './pages/quiz/selectordialog/selectordia
   declarations: [
     AppComponent,
     IntroComponent,
-    QuizComponent,
-    ResultComponent,
     PokemonSelectorComponent,
     PokemonTableComponent,
     ConfirmdialogComponent,
-    SelectordialogComponent
+    SelectordialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +52,6 @@ import { SelectordialogComponent } from './pages/quiz/selectordialog/selectordia
   ],
   providers: [ConfirmdialogComponent, SelectordialogComponent],
   entryComponents: [ConfirmdialogComponent, SelectordialogComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -6,7 +6,7 @@ import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { ConfirmdialogComponent } from 'src/app/confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material';
 import { listOfAllPokemonSrc } from '../../../pokemon';
-import { allTypes, allGenerations } from 'src/app/variables';
+import { allGenerations } from 'src/app/variables';
 
 @Component({
   selector: 'app-pokemon-selector',
@@ -25,21 +25,18 @@ export class PokemonSelectorComponent implements OnInit {
 
   savedFavorites;
 
-  allPokemonTypes = [];
   listOfAllPokemon = [];
   generations = [];
   chosenCategory = null;
   chosenType = '';
 
   constructor(
-    private pfs: PokemonfetcherService,
     private router: Router,
     public pss: PokemonstorageService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.allPokemonTypes = allTypes;
     this.generations = allGenerations;
     this.listOfAllPokemon = listOfAllPokemonSrc;
     this.chosenCategory = this.pss.getChosenCategory();
@@ -49,23 +46,12 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   isPokemonCorrectType(pokemon) {
-    // console.log("pokemon.types: ", pokemon.types)
-    // return (pokemon.types.find(t => {
-    //   if (t.type.name && this.chosenType) {
-    //     return (t.type.name.toLowerCase() === this.chosenType.toLowerCase());
-    //   }
-    // }));
-    // console.log("chosenType: ", this.pss.getChosenType())
     this.updateChosenType();
     if (this.chosenType) {
       return pokemon.types.find(
         (t) => t.type.name.toLowerCase() === this.chosenType.toLowerCase()
       );
     }
-
-    // return pokemon.types.find(e => {
-    //   e.type.name.toLowerCase() === this.pss.getChosenType().toLowerCase()
-    // });
   }
 
   updateChosenCategory() {
@@ -104,19 +90,7 @@ export class PokemonSelectorComponent implements OnInit {
   }
 
   savePokemonAsFavorite(generation: number, type: string, pokemon) {
-    if (generation === 0) {
-      // This is all gens
-    }
     this.pss.savePokemon(generation, type, pokemon);
-    console.log(
-      'selected generation ',
-      generation,
-      ' and type ',
-      type,
-      ' with pokemon ',
-      pokemon
-    );
-
     this.updateFavoritesInTable();
   }
 

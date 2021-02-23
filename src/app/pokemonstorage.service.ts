@@ -2,38 +2,53 @@ import { Injectable } from '@angular/core';
 import { SimplePokemon } from './classes';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonstorageService {
-
   totalSavedFavorites = [];
 
   chosenCategory;
   chosenType;
 
-  constructor() { }
+  constructor() {}
 
   savePokemon(category: number, type: string, pokemon) {
     const savedFavorites = localStorage.getItem('pokemonMapperFavorites');
 
     if (!savedFavorites) {
-      localStorage.setItem('pokemonMapperFavorites', JSON.stringify(this.totalSavedFavorites));
+      localStorage.setItem(
+        'pokemonMapperFavorites',
+        JSON.stringify(this.totalSavedFavorites)
+      );
     }
 
-    this.totalSavedFavorites = JSON.parse(localStorage.getItem('pokemonMapperFavorites'));
+    this.totalSavedFavorites = JSON.parse(
+      localStorage.getItem('pokemonMapperFavorites')
+    );
 
-    if (!this.totalSavedFavorites.find(e => e.id === category)) {
+    if (!this.totalSavedFavorites.find((e) => e.id === category)) {
       const newCat = new FavoriteCategory(category, []);
       newCat.favoriteTypes.push(new FavoriteType(type, pokemon));
       this.totalSavedFavorites.push(newCat);
     } else {
-      if (this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type)) {
-        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.find(f => f.type === type).pokemon = pokemon;
+      if (
+        this.totalSavedFavorites
+          .find((e) => e.id === category)
+          .favoriteTypes.find((f) => f.type === type)
+      ) {
+        this.totalSavedFavorites
+          .find((e) => e.id === category)
+          .favoriteTypes.find((f) => f.type === type).pokemon = pokemon;
       } else {
-        this.totalSavedFavorites.find(e => e.id === category).favoriteTypes.push(new FavoriteType(type, pokemon));
+        this.totalSavedFavorites
+          .find((e) => e.id === category)
+          .favoriteTypes.push(new FavoriteType(type, pokemon));
       }
     }
-    localStorage.setItem('pokemonMapperFavorites', JSON.stringify(this.totalSavedFavorites));
+    localStorage.setItem(
+      'pokemonMapperFavorites',
+      JSON.stringify(this.totalSavedFavorites)
+    );
   }
 
   getSavedFavoritesFromLocalStorage() {
@@ -41,11 +56,6 @@ export class PokemonstorageService {
   }
 
   selectTableBox(generation: number, type: string) {
-    // console.log('selected generation ', generation, ' and type ', type);
-    if (generation === 0) {
-      // This is all gens
-      // console.log('For all gens i see');
-    }
     this.chosenCategory = generation;
     this.chosenType = type;
   }
@@ -55,16 +65,15 @@ export class PokemonstorageService {
   }
 
   getChosenType() {
-    // console.log("chosenType: --->", this.chosenType)
     return this.chosenType;
   }
 
   getFavoriteForCategoryAndType(category: number, type: string) {
     let favorite;
     const data = JSON.parse(localStorage.getItem('pokemonMapperFavorites'));
-    let foundCat = data.find(c => c.id === category);
+    const foundCat = data.find((c) => c.id === category);
     if (foundCat && foundCat.favoriteTypes) {
-      favorite = foundCat.favoriteTypes.find(t => t === type);
+      favorite = foundCat.favoriteTypes.find((t) => t === type);
     }
     if (favorite) {
       return favorite.pokemon;
@@ -89,7 +98,6 @@ export class FavoriteCategory {
 
 export class FavoriteType {
   type: string;
-  // pokemon: any; // Too heavy on Chrome to use
   pokemon: SimplePokemon;
 
   constructor(type, pokemon) {
