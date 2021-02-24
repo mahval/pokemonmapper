@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonfetcherService } from 'src/app/pokemonfetcher.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';

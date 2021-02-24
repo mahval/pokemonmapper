@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonfetcherService } from 'src/app/pokemonfetcher.service';
 import { pokemonTypes, allGenerations } from '../../../variables';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
 import { MatDialog } from '@angular/material';
