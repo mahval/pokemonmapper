@@ -9,7 +9,7 @@ import { listOfAllPokemonSrc } from 'src/app/pokemon';
   selector: 'app-pokemon-table',
   templateUrl: './pokemon-table.component.html',
 })
-export class PokemonTableComponent implements OnInit {
+export class PokemonTableComponent {
   dataReady = false;
 
   chosenCategory;
@@ -23,14 +23,6 @@ export class PokemonTableComponent implements OnInit {
     this.allPokemonTypes = pokemonTypes;
     this.generations = allGenerations;
     this.listOfAllPokemon = listOfAllPokemonSrc;
-  }
-
-  ngOnInit() {}
-
-  selectTableBox_old(generation: number, type: string) {
-    this.pss.selectTableBox(generation, type);
-    this.updateChosenCategory();
-    this.updateChosenType();
   }
 
   selectTableBox(generation: number, type: string) {

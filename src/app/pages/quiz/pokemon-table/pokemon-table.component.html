@@ -3,7 +3,7 @@
     <tr>
       <th class="nothing-td"></th>
       <th *ngFor="let type of allPokemonTypes" class="type-td">
-        {{ type }}
+        <span>{{ type }}</span>
       </th>
     </tr>
     <tr *ngFor="let generation of generations">
@@ -16,16 +16,13 @@
           'selected-td': isTableBoxSelected(generation.number, type)
         }"
       >
-        <ng-container
+        <img
           *ngIf="getFavoriteForCategoryAndType(generation.number, type)"
-        >
-          <img
-            [src]="
-              getFavoriteForCategoryAndType(generation.number, type)
-                ?.pokemonSprite
-            "
-          />
-        </ng-container>
+          [src]="
+            getFavoriteForCategoryAndType(generation.number, type)
+              ?.pokemonSprite
+          "
+        />
       </td>
     </tr>
     <tr>

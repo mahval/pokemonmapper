@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PokemonstorageService } from 'src/app/pokemonstorage.service';
-import { listOfAllPokemonSrc } from 'src/app/pokemon';
 import { allGenerations } from 'src/app/variables';
 
 @Component({
@@ -41,14 +40,6 @@ export class SelectordialogComponent implements OnInit {
 
   savePokemonAsFavorite(generation: number, type: string, pokemon) {
     this.pss.savePokemon(generation, type, pokemon);
-    console.log(
-      'selected generation ',
-      generation,
-      ' and type ',
-      type,
-      ' with pokemon ',
-      pokemon
-    );
     this.onNoClick();
   }
 
@@ -78,10 +69,6 @@ export class SelectordialogComponent implements OnInit {
 
   selectPokemon(pokemon) {
     this.selectedPokemon = pokemon;
-  }
-
-  reset() {
-    this.dialogRef.close(true);
   }
 
   onNoClick(): void {
