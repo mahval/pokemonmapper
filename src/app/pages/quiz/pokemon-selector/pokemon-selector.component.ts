@@ -16,7 +16,7 @@ export class PokemonSelectorComponent implements OnInit {
   listURLsReady = false;
   listDataReady = false;
 
-  selectedBox = null; // What box user wants to fill
+  selectedBox = null;
 
   quizFormGroup: FormGroup;
 
